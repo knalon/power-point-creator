@@ -36,7 +36,7 @@ class PowerPointController extends Controller
         $titleShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
 
         // Add Title Text
-        $textRun = $titleShape->createTextRun($title);
+        $textRun = $titleShape->createTextRun(str_replace(['*', '#', '_'], '', $title));
         $font = new Font();
         $font->setName('Montserrat')
             ->setBold(true)
@@ -53,8 +53,7 @@ class PowerPointController extends Controller
                 ->setOffsetY(115);
             $subtitleShape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
             $subtitleShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
-
-            $subtitleRun = $subtitleShape->createTextRun($subtitle);
+            $subtitleRun = $subtitleShape->createTextRun(str_replace(['*', '#', '_'], '', $subtitle));
             $subtitleFont = new Font();
             $subtitleFont->setName('Montserrat')
                 ->setSize(24)
@@ -86,7 +85,8 @@ class PowerPointController extends Controller
             $parts = preg_split("/\n/", trim($section));
 
             foreach ($parts as $index => $part) {
-                $textRun = $contentShape->createTextRun($part . "\n");
+                $sanitizedLine = str_replace(['*', '#', '_'], '', $part);
+                $textRun = $contentShape->createTextRun($sanitizedLine . "\n");
                     $textRun->setFont($paragraphFont);  // Paragraph font for detailed explanations
 
             }

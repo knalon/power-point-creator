@@ -36,13 +36,26 @@ class WordController extends Controller
                 // $line = str_replace("\'","",trim($line));
                 
                 log::info($line);
+                // if (empty($line)) {
+                //     $section->addTextBreak(); // Adds a blank line for spacing
+                // } elseif (preg_match('/^\d+\.\s|^\*\*/', $line)) {
+                //     // Check if it's a list item or subheading (begins with a number or '**')
+                //     $section->addListItem($line, 0, $listStyle); // Adjust level as needed
+                // } else {
+                //     $section->addText($line, $contentStyle);
+                // }
                 if (empty($line)) {
                     $section->addTextBreak(); // Adds a blank line for spacing
-                } elseif (preg_match('/^\d+\.\s|^\*\*/', $line)) {
-                    // Check if it's a list item or subheading (begins with a number or '**')
-                    $section->addListItem($line, 0, $listStyle); // Adjust level as needed
                 } else {
-                    $section->addText($line, $contentStyle);
+                    // Remove special characters * # _
+                    $sanitizedLine = str_replace(['*', '#', '_'], '', $line);
+
+                    if (preg_match('/^\d+\.\s|^\*\*/', $sanitizedLine)) {
+                        // Check if it's a list item or subheading (begins with a number or '**')
+                        $section->addListItem(htmlspecialchars($sanitizedLine), 0, $listStyle); // Adjust level as needed
+                    } else {
+                        $section->addText(htmlspecialchars($sanitizedLine), $contentStyle);
+                    }
                 }
             }
         }

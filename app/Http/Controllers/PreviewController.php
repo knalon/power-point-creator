@@ -94,16 +94,25 @@ class PreviewController extends Controller
             - **Audience**: $audience
             Generate a list of at least".$request->input('noOfSlide','15')."  slide titles that logically outline this 
             presentation, covering each major aspect of the topic without including 
-            introductory or concluding slides.";
+            introductory or concluding slides.
+            - Do not add page numbers.
+            - Do not use any asterisk or hash or underscore.
+            - Remove every * or # or _ in the response.";
         } else if ($formType === 'howto' && !($slideTitle)) {
             return "Generate a list of at least".$request->input('noOfSlide','15')." slide titles that logically 
-            outline this word document, with each title focusing on a distinct subtopic 
+            outline this power point document, with each title focusing on a distinct subtopic 
             or aspect of the topic : \"$topic\". Each title should build on the previous slide's 
-            content without overlap, ensuring a smooth, progressive flow.";
+            content without overlap, ensuring a smooth, progressive flow. The whole document will highly focus on
+            how to do the topic instead of heavily explaining the topic.
+            - Do not add page numbers.
+            - Do not use any asterisk or hash or underscore.
+            - Remove every * or # or _ in the response.";
         }else if($formType === 'general' && $slideTitle){
             return "For a PowerPoint slide titled \"$slideTitle\" on the topic of AI as \"$role\":
             - Provide two main points, each with a detailed paragraph explaining its significance in this context.
             - Use the provided details:
+            - Do not use any asterisk or hash or underscore.
+            - Remove every * or # or _ in the response.
             - **Scenario**: $scenario
             - **Expectations**: $expectations
             - **Limitations**: $limitations
@@ -117,6 +126,8 @@ class PreviewController extends Controller
             The current page should build on the previous page's content 
             without overlap, ensuring a smooth, progressive flow.
             Throughout the whole powerpoint file,
+            - The context should focus on \"how to \" do things instead of 
+                focusing on explaning too much.
             - Provide a detailed, step-by-step guide that I can follow 
                 and demonstrate each part of the process. 
             - include specific steps, technical requirements, and tips for each stage, 
@@ -124,16 +135,14 @@ class PreviewController extends Controller
             - include specific code snippets as well.
             - should be easy for beginners to understand.
             - Do not add page numbers.
-            - Do not generat any * or ** or *** or **** or # or ## or ### or #### in the response.
-            - Do not use any * or ** or *** or **** or # or ## or ### or #### or _ in the response.
+            - Do not use any asterisk or hash or underscore.
+            - Remove every * or # or _ in the response.
+            - Even if it is part of the code, Replace every single quote and double quote
             - Use the provided details:
             - **Scenario**: $topic
             - **Expectations**: $expectations
             - **Limitations**: $limitations
-            - **Audience**: $audience
-            - **Front End Technology**: Microsoft Copilot Studio (GUI - Web version)
-            - **Back End Technology**: Microsoft Copilot Studio (GUI - Web Version)";
-    
+            - **Audience**: $audience";
         }
     }
 }
